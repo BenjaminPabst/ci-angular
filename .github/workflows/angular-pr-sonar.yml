@@ -5,7 +5,7 @@ on:
     inputs:
       node:
         description: 'Node version'
-        default: '20'
+        default: '16'
         required: false
         type: string
       artifact:
@@ -27,7 +27,7 @@ jobs:
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success'    
     steps:
-      - uses: dawidd6/action-download-artifact@v3
+      - uses: dawidd6/action-download-artifact@v2
         with:
           run_id: ${{ github.event.workflow_run.id }}
           name: github-action-pr
