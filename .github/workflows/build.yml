@@ -2,13 +2,7 @@ name: build
 
 on:
   workflow_call:
-    inputs:
-      helmEventTargetRepository:
-        description: 'Target repository'
-        default: ''
-        required: false
-        type: string
-        
+
 jobs:
   codeql:
     uses: onecx-apps/ci-angular/.github/workflows/angular-codeql.yml@v1
@@ -21,8 +15,6 @@ jobs:
     needs: angular
     secrets: inherit
     with:
-      buildx: true
-      platform: 'linux/amd64,linux/arm64'
       tags: '{{ .Version }},{{ .Branch }}'
       push: true
       samoDockerFile: Dockerfile
@@ -37,11 +29,4 @@ jobs:
     with:
       push: true
       helmDir: 'helm'
-  helm-event:
-    if: ${{ inputs.helmEventTargetRepository != '' }}
-    uses: onecx-apps/ci-product/.github/workflows/helm-send-event.yml@v1
-    needs: helm
-    secrets: inherit
-    with:
-      targetRepository: ${{ inputs.helmEventTargetRepository }}
       
