@@ -5,13 +5,13 @@ on:
 
 jobs:
   docker:
-    uses: onecx-apps/ci-common/.github/workflows/docker-release.yml@v1
+    uses: onecx-apps/ci-common/.github/workflows/docker-release.yml@v3
     secrets: inherit
   helm:
-    uses: onecx-apps/ci-common/.github/workflows/helm-release.yml@v1
+    uses: onecx-apps/ci-common/.github/workflows/helm-release.yml@v3
     needs: docker
     secrets: inherit
   changelog:
-    uses: onecx-apps/ci-common/.github/workflows/generate-changelog.yml@v1
+    uses: onecx-apps/ci-common/.github/workflows/generate-changelog.yml@v3
     needs: helm
     secrets: inherit
