@@ -5,7 +5,7 @@ on:
     inputs:
       node:
         description: 'Node version'
-        default: '16'
+        default: '20'
         required: false
         type: string  
       push:
@@ -34,17 +34,17 @@ jobs:
     # install samo tool
     - uses: lorislab/install-samo-action@v2
     # checkout the project    
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
     # setup node.js
     - name: Setup Node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node }}
         cache: 'npm'   
     # login to github docker registry in the organization
-    - uses: docker/login-action@v2
+    - uses: docker/login-action@v3
       with:
         registry: ${{ env.QUARKUS_CONTAINER_IMAGE_REGISTRY }}
         username: ${{ github.actor }}
@@ -55,7 +55,7 @@ jobs:
         VERSION=$(samo project version)
         npm version --no-git-tag-version $VERSION    
     - name: Dependencies
-      run: npm install
+      run: npm ci
     # Check the project        
     - name: Check project
       run: npm run lint    
@@ -70,18 +70,18 @@ jobs:
       if: github.event_name == 'pull_request'
       run: echo ${{ github.event.number }} > github-action-pr.txt       
     # upload github action pr number
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: github.event_name == 'pull_request'
       with:
         name: github-action-pr
         path: github-action-pr.txt
     # upload target for next jobs
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: package
         path: |
             package.json      
             dist/
-            coverage/
+            reports/
         retention-days: 1
         if-no-files-found: ignore
